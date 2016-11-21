@@ -52,7 +52,7 @@
 
     /*���ͷ��ʽ*/
     .sk-calendar-left {
-        background-image: url(arrow_left@2x.png);
+        background-image: url(node_modules/seekjs-plugin-datePicker/arrow_left@2x.png);
         background-position-x: right;
         position: absolute;
         left:0;
@@ -60,7 +60,7 @@
 
     /*�Ҽ�ͷ��ʽ*/
     .sk-calendar-right {
-        background-image: url(arrow_right@2x.png);
+        background-image: url(node_modules/seekjs-plugin-datePicker/arrow_right@2x.png);
         background-position-x: left;
         position: absolute;
         top:0;
@@ -167,7 +167,8 @@
     /**
      * 日历插件
      */
-    var pipe = require('pipe');
+
+    var pipe = require("sys.pipe");
 
     var dt = new Date();
     exports.today = {
@@ -214,7 +215,7 @@
         exports.draw();
         if(exports.input){
             var dateStr = pipe.format("{year}/{month}/{date}", exports.selected);
-            dateStr = pipe.format(dateStr, "yyyy-MM-dd");
+            dateStr = pipe.date_format(dateStr, "yyyy-MM-dd");
             exports.input.val(dateStr);
             exports.onDateChange && exports.onDateChange(exports.input.attr("dateType"),dateStr);
             exports.hide();
