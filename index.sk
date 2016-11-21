@@ -1,0 +1,283 @@
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    .sk-calendar{
+        z-index: 2;
+    }
+
+    .sk-calendar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+
+    .sk-calendar ul li {
+        display: inline-block;
+        width: 14.285%;
+        box-sizing:border-box;
+        line-height: 30px;
+        height: 30px;
+        color: #888;
+        text-align: center;
+    }
+
+    /*ͷ����ʽ*/
+    .sk-calendar-ymbar {
+        background: #eee;
+        height: 3rem;
+        line-height: 3rem;
+        position: relative;
+    }
+
+    .sk-calendar-ymbar select {
+        background: #eee;
+        border:none;
+        height: auto;
+        line-height: none;
+        padding: 0;
+        margin: 0;
+        width: 80px;
+    }
+
+    .sk-calendar-ymbar p {
+        width: 30px;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: 12px 18px;
+        background-position-y: center;
+    }
+
+    /*���ͷ��ʽ*/
+    .sk-calendar-left {
+        background-image: url(arrow_left@2x.png);
+        background-position-x: right;
+        position: absolute;
+        left:0;
+    }
+
+    /*�Ҽ�ͷ��ʽ*/
+    .sk-calendar-right {
+        background-image: url(arrow_right@2x.png);
+        background-position-x: left;
+        position: absolute;
+        top:0;
+        right:0;
+    }
+
+    /*������ʽ*/
+    .sk-calendar-xq {
+        background: #fff;
+    }
+
+    /*������ʽ*/
+    .sk-calendar-ym {
+        text-align: center;
+        margin:0 auto;
+    }
+
+    /*������ʽ*/
+    .sk-calendar-dlist {
+        background: #fff;
+        border-top: 1px solid #eee;
+        border-left: 1px solid #eee;
+    }
+
+    .sk-calendar-dlist li {
+        border-bottom: 1px solid #eee;
+        border-right: 1px solid #eee;
+    }
+
+    .sk-calendar-dlist li.today {
+        background: #FF7F00;
+        color: #fff;
+    }
+
+    .sk-calendar-dlist li.selectedday {
+        background:#3AC0FD;
+        color: #fff;
+    }
+    .sk-calendar-dlist li.disable {
+        background: #eeeeee;
+        color: #fff;
+    }
+    .cantSet{
+        background: #c0c0c0;
+        cursor: text;
+    }
+</style>
+
+<template>
+    <%
+        var today = this.today;
+        var selected = this.selected;
+        var maxDate = this.maxDate;
+        var minDate = this.minDate;
+    %>
+    <div class="sk-calendar" style="background:#fff;width:100%;height: 246px;">
+        <div class="sk-calendar-ymbar">
+            <p class="sk-calendar-left" data-event="goPrevMonth"></p>
+            <div class="sk-calendar-ym">
+                <select class="sk-calendar-ylist" data-event="change>setYear">
+                    <% for (var i=today.year-100; i<=today.year+50; i++){ %>
+                    <option value="{i}" {if i==this.year} selected="selected" {/if}>{i}年</option>
+                    <% } %>
+                </select>
+                <select class="sk-calendar-mlist" data-event="change>setMonth">
+                    <% for(var i=1; i<=12; i++){ %>
+                    <option value="{i}" {if i==this.month} selected="selected" {/if}>{i}月</option>
+                    <% } %>
+                </select>
+            </div>
+            <p class="sk-calendar-right" data-event="goNextMonth"></p>
+        </div>
+        <ul class="sk-calendar-xq"><li>周日</li><li>周一</li><li>周二</li><li>周三</li><li>周四</li><li>周五</li><li>周六</li></ul>
+        <%
+        var dayHTML = [];
+        for(var i=1; i<=this.day; i++){
+            dayHTML.push('<li>&nbsp;</li>');
+        }
+        for(var i=1; i<=this.days; i++){
+        var dateTimes = new Date(this.year+"/"+this.month+"/"+i).getTime();
+        if(maxDate!=0&&maxDate<dateTimes){
+
+            dayHTML.push('<li class="cantSet" ');
+        }else if(minDate!=0&&minDate>dateTimes){
+            dayHTML.push('<li class="cantSet" ');
+        }else{
+            dayHTML.push('<li data-event="setDate" ');
+        }
+
+        if(selected.year==this.year&&selected.month==this.month&&selected.date==i){
+            dayHTML.push(' class="selectedday"');
+        }else if(today.year==this.year&&today.month==this.month&&today.date==i){
+            dayHTML.push(' class="today"');
+        }
+            dayHTML.push('>'+i+'</li>');
+        }
+            dayHTML = dayHTML.join("");
+        %>
+        <ul class="sk-calendar-dlist">{dayHTML}</ul>
+    </div>
+</template>
+
+<script>
+    /**
+     * 日历插件
+     */
+    var str = require('sys.string');
+    var date = require("sys.date");
+
+    var dt = new Date();
+    exports.today = {
+        year: dt.getFullYear(),
+        month: dt.getMonth() + 1,
+        date: dt.getDate()
+    };
+
+    exports.selected = {}; //选中
+    //	box: document.body,
+    exports.year = exports.today.year;
+    exports.month = exports.today.month;
+    exports.date = exports.today.date;
+
+    exports.maxDate = 0;
+    exports.minDate = 0;
+    //选中
+    exports.select = function($element, onDateChange){
+        exports.input = $element;
+        exports.onDateChange = onDateChange;
+        exports.show();
+        exports.draw();
+    };
+
+    //设置年份
+    exports.setYear = function(){
+        exports.year = +exports.element.value;
+        exports.date = 0;
+        exports.draw();
+    };
+
+    //设置月份
+    exports.setMonth = function () {
+        exports.month = +exports.element.value;
+        exports.date = 0;
+        exports.draw();
+    };
+
+    //设置日期
+    exports.setDate = function () {
+        exports.selected.year = exports.year;
+        exports.selected.month = exports.month;
+        exports.selected.date = +exports.element.innerHTML;
+        exports.draw();
+        if(exports.input){
+            var dateStr = str.format("{year}/{month}/{date}", exports.selected);
+            dateStr = date.format(dateStr, "yyyy-MM-dd");
+            exports.input.val(dateStr);
+            exports.onDateChange && exports.onDateChange(exports.input.attr("dateType"),dateStr);
+            exports.hide();
+        }
+    };
+
+    //跳到上一个月
+    exports.goPrevMonth = function(){
+        var month = exports.month - 1;
+        if(month<1){
+            exports.year -= 1;
+            month = 12;
+        }
+        exports.month = month;
+        exports.draw();
+    };
+
+    //跳到下一个月
+    exports.goNextMonth = function(){
+        var month = exports.month + 1;
+        if(month>12){
+            exports.year += 1;
+            month = 1;
+        }
+        exports.month = month;
+        exports.draw();
+    };
+
+    //设置日期
+    exports.setDayAndDays = function () {
+        exports.day = new Date(exports.year, exports.month - 1, 1).getDay();
+        exports.days = new Date(exports.year, exports.month, 0).getDate();
+    };
+    exports.setDayAndDays();
+
+    //绘制
+    exports.draw = function () {
+        exports.setDayAndDays();
+        exports.canSetDate();
+        exports.render();
+        exports.ui.style.top = exports.input.position().top+exports.ui.offsetHeight+exports.input.height()+30+"px";
+        exports.ui.style.left = exports.input.position().left+exports.ui.offsetWidth+exports.input.width()-110+"px";
+        exports.ui.style.position = "absolute";
+    };
+
+    exports.canSetDate = function(){
+        var maxDate = exports.input.attr("max");
+        var minDate = exports.input.attr("min");
+        if(maxDate&&maxDate!=""){
+            exports.minDate = 0;
+            exports.maxDate = date.parseDate(maxDate).getTime();
+        }
+        if(minDate&&minDate!=""){
+            exports.maxDate = 0;
+            exports.minDate = date.parseDate(minDate).getTime();
+        }
+        if(maxDate==undefined&&minDate==undefined){
+            exports.maxDate = 0;
+            exports.minDate = 0;
+        }
+        if(maxDate==undefined)exports.maxDate = 0;
+        if(minDate==undefined)exports.minDate = 0;
+    };
+
+</script>
