@@ -111,12 +111,12 @@
 
 <template>
     <%
-        var today = this.today;
-        var selected = this.selected;
-        var maxDate = this.maxDate;
-        var minDate = this.minDate;
+    var today = this.today;
+    var selected = this.selected;
+    var maxDate = this.maxDate;
+    var minDate = this.minDate;
     %>
-    <div class="sk-calendar" style="background:#fff;width:100%;height: 246px;">
+    <div class="sk-calendar" style="background:#fff;width:50%;height: 246px;">
         <div class="sk-calendar-ymbar">
             <p class="sk-calendar-left" data-event="goPrevMonth"></p>
             <div class="sk-calendar-ym">
@@ -137,27 +137,27 @@
         <%
         var dayHTML = [];
         for(var i=1; i<=this.day; i++){
-            dayHTML.push('<li>&nbsp;</li>');
+        dayHTML.push('<li>&nbsp;</li>');
         }
         for(var i=1; i<=this.days; i++){
         var dateTimes = new Date(this.year+"/"+this.month+"/"+i).getTime();
         if(maxDate!=0&&maxDate<dateTimes){
 
-            dayHTML.push('<li class="cantSet" ');
+        dayHTML.push('<li class="cantSet" ');
         }else if(minDate!=0&&minDate>dateTimes){
-            dayHTML.push('<li class="cantSet" ');
+        dayHTML.push('<li class="cantSet" ');
         }else{
-            dayHTML.push('<li data-event="setDate" ');
+        dayHTML.push('<li data-event="setDate" ');
         }
 
         if(selected.year==this.year&&selected.month==this.month&&selected.date==i){
-            dayHTML.push(' class="selectedday"');
+        dayHTML.push(' class="selectedday"');
         }else if(today.year==this.year&&today.month==this.month&&today.date==i){
-            dayHTML.push(' class="today"');
+        dayHTML.push(' class="today"');
         }
-            dayHTML.push('>'+i+'</li>');
+        dayHTML.push('>'+i+'</li>');
         }
-            dayHTML = dayHTML.join("");
+        dayHTML = dayHTML.join("");
         %>
         <ul class="sk-calendar-dlist">{dayHTML}</ul>
     </div>
@@ -213,7 +213,7 @@
         exports.selected.date = +exports.element.innerHTML;
         exports.draw();
         if(exports.input){
-            var dateStr = pipe.format("{year}/{month}/{date}", exports.selected);
+            var dateStr = `${exports.selected.year}/${exports.selected.month}/${exports.selected.date}`;
             dateStr = pipe.date_format(dateStr, "yyyy-MM-dd");
             exports.input.val(dateStr);
             exports.onDateChange && exports.onDateChange(exports.input.attr("dateType"),dateStr);
@@ -255,6 +255,7 @@
         exports.setDayAndDays();
         exports.canSetDate();
         exports.render();
+        exports.show();
         exports.ui.style.top = exports.input.position().top+exports.ui.offsetHeight+exports.input.height()+30+"px";
         exports.ui.style.left = exports.input.position().left+exports.ui.offsetWidth+exports.input.width()-110+"px";
         exports.ui.style.position = "absolute";
