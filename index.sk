@@ -52,7 +52,7 @@
 
     /*���ͷ��ʽ*/
     .sk-calendar-left {
-        background-image: url(arrow_left@2x.png);
+        background-image: url(node_modules/seekjs-plugin-datePicker/arrow_left@2x.png);
         background-position-x: right;
         position: absolute;
         left:0;
@@ -60,7 +60,7 @@
 
     /*�Ҽ�ͷ��ʽ*/
     .sk-calendar-right {
-        background-image: url(arrow_right@2x.png);
+        background-image: url(node_modules/seekjs-plugin-datePicker/arrow_right@2x.png);
         background-position-x: left;
         position: absolute;
         top:0;
@@ -167,8 +167,7 @@
     /**
      * 日历插件
      */
-    var str = require('sys.string');
-    var date = require("sys.date");
+    var pipe = require("sys.pipe");
 
     var dt = new Date();
     exports.today = {
@@ -214,8 +213,8 @@
         exports.selected.date = +exports.element.innerHTML;
         exports.draw();
         if(exports.input){
-            var dateStr = str.format("{year}/{month}/{date}", exports.selected);
-            dateStr = date.format(dateStr, "yyyy-MM-dd");
+            var dateStr = pipe.format("{year}/{month}/{date}", exports.selected);
+            dateStr = pipe.date_format(dateStr, "yyyy-MM-dd");
             exports.input.val(dateStr);
             exports.onDateChange && exports.onDateChange(exports.input.attr("dateType"),dateStr);
             exports.hide();
@@ -266,11 +265,11 @@
         var minDate = exports.input.attr("min");
         if(maxDate&&maxDate!=""){
             exports.minDate = 0;
-            exports.maxDate = date.parseDate(maxDate).getTime();
+            exports.maxDate = pipe.parseDate(maxDate).getTime();
         }
         if(minDate&&minDate!=""){
             exports.maxDate = 0;
-            exports.minDate = date.parseDate(minDate).getTime();
+            exports.minDate = pipe.parseDate(minDate).getTime();
         }
         if(maxDate==undefined&&minDate==undefined){
             exports.maxDate = 0;
