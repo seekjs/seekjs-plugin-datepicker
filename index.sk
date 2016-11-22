@@ -116,7 +116,7 @@
     var maxDate = this.maxDate;
     var minDate = this.minDate;
     %>
-    <div class="sk-calendar" style="background:#fff;width:50%;height: 246px;">
+    <div class="sk-calendar" style="background:#fff;width:350px;">
         <div class="sk-calendar-ymbar">
             <p class="sk-calendar-left" data-event="goPrevMonth"></p>
             <div class="sk-calendar-ym">
@@ -263,8 +263,8 @@
     };
 
     exports.canSetDate = function(){
-        var maxDate = exports.input.attributes("max");
-        var minDate = exports.input.attributes("min");
+        var maxDate = exports.input[0].max;
+        var minDate = exports.input[0].min;
         if(maxDate&&maxDate!=""){
             exports.minDate = 0;
             exports.maxDate = pipe.parseDate(maxDate).getTime();
