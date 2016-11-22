@@ -22,7 +22,7 @@
         height: 30px;
         color: #888;
         text-align: center;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     /*ͷ����ʽ*/
@@ -117,7 +117,7 @@
     var maxDate = this.maxDate;
     var minDate = this.minDate;
     %>
-    <div class="sk-calendar" style="background:#fff;width:60%;height: 246px;">
+    <div class="sk-calendar" style="background:#fff;width:400px;">
         <div class="sk-calendar-ymbar">
             <p class="sk-calendar-left" data-event="goPrevMonth"></p>
             <div class="sk-calendar-ym">
@@ -168,6 +168,7 @@
     /**
      * 日历插件
      */
+
     var pipe = require("sys.pipe");
 
     var dt = new Date();
@@ -290,8 +291,8 @@
     };
 
     exports.canSetDate = function(){
-        var maxDate = exports.input.attr("max");
-        var minDate = exports.input.attr("min");
+        var maxDate = exports.input[0].max;
+        var minDate = exports.input[0].min;
         if(maxDate&&maxDate!=""){
             exports.minDate = 0;
             exports.maxDate = pipe.parseDate(maxDate).getTime();
