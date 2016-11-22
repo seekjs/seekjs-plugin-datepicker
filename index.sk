@@ -22,6 +22,7 @@
         height: 30px;
         color: #888;
         text-align: center;
+        font-size: 14px;
     }
 
     /*ͷ����ʽ*/
@@ -116,24 +117,24 @@
     var maxDate = this.maxDate;
     var minDate = this.minDate;
     %>
-    <div class="sk-calendar" style="background:#fff;width:50%;height: 246px;">
+    <div class="sk-calendar" style="background:#fff;width:60%;height: 246px;">
         <div class="sk-calendar-ymbar">
             <p class="sk-calendar-left" data-event="goPrevMonth"></p>
             <div class="sk-calendar-ym">
                 <select class="sk-calendar-ylist" data-event="change>setYear">
                     <% for (var i=today.year-100; i<=today.year+50; i++){ %>
-                    <option value="{i}" {if i==this.year} selected="selected" {/if}>{i}年</option>
+                    <option value="{i}" {if i==this.year} selected="selected" {/if}>{i}{this.currentLang.year}</option>
                     <% } %>
                 </select>
                 <select class="sk-calendar-mlist" data-event="change>setMonth">
                     <% for(var i=1; i<=12; i++){ %>
-                    <option value="{i}" {if i==this.month} selected="selected" {/if}>{i}月</option>
+                    <option value="{i}" {if i==this.month} selected="selected" {/if}>{i}{this.currentLang.month}</option>
                     <% } %>
                 </select>
             </div>
             <p class="sk-calendar-right" data-event="goNextMonth"></p>
         </div>
-        <ul class="sk-calendar-xq"><li>周日</li><li>周一</li><li>周二</li><li>周三</li><li>周四</li><li>周五</li><li>周六</li></ul>
+        <ul class="sk-calendar-xq"><li>{this.currentLang.sunday}</li><li>{this.currentLang.monday}</li><li>{this.currentLang.tuesday}</li><li>{this.currentLang.wednesday}</li><li>{this.currentLang.thursday}</li><li>{this.currentLang.friday}</li><li>{this.currentLang.saturday}</li></ul>
         <%
         var dayHTML = [];
         for(var i=1; i<=this.day; i++){
@@ -184,6 +185,33 @@
 
     exports.maxDate = 0;
     exports.minDate = 0;
+
+    exports.Lang = {
+        pt:{
+            monday:"Segunda",
+            tuesday:"Terça",
+            wednesday:"Quarta",
+            thursday:"Quinta",
+            friday:"Sexta",
+            saturday:"Sábado",
+            sunday:"Domingo",
+            year:"Ano",
+            month:"Mês"
+        },
+        cn:{
+            monday:"周一",
+            tuesday:"周二",
+            wednesday:"周三",
+            thursday:"周四",
+            friday:"周五",
+            saturday:"周六",
+            sunday:"周日",
+            year:" 年",
+            month:"月"
+        }
+    };
+
+    exports.currentLang = exports.app.langType?exports.Lang[exports.app.langType] : exports.Lang.cn;
     //选中
     exports.select = function($element, onDateChange){
         exports.input = $element;
