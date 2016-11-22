@@ -262,8 +262,8 @@
     };
 
     exports.canSetDate = function(){
-        var maxDate = exports.input.attr("max");
-        var minDate = exports.input.attr("min");
+        var maxDate = exports.input.attributes("max");
+        var minDate = exports.input.attributes("min");
         if(maxDate&&maxDate!=""){
             exports.minDate = 0;
             exports.maxDate = pipe.parseDate(maxDate).getTime();
