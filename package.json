@@ -2,7 +2,7 @@
   "name": "seekjs-plugin-datepicker",
   "version": "1.0.1",
   "description": "this is a date picker plugin by seekjs",
-  "main": "index.sk",
+  "main": "ui.js",
   "scripts": {
     "test": "echo test"
   },
