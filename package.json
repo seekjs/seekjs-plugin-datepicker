@@ -1,5 +1,5 @@
 {
-  "name": "seekjs-plugin-datepicker",
+  "name": "seek2-plugin-datepicker",
   "version": "1.0.2",
   "description": "this is a date picker plugin by seekjs",
   "main": "ui.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seekjs-framework/seekjs-plugin-datepicker.git"
+    "url": "git+https://github.com/seekjs/seek2-plugin-datepicker.git"
   },
   "keywords": [
     "date",
@@ -18,7 +18,7 @@
   "author": "Qu min",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/seekjs-framework/seekjs-plugin-datepicker/issues"
+    "url": "https://github.com/seekjs/seek2-plugin-datepicker/issues"
   },
-  "homepage": "https://github.com/seekjs-framework/seekjs-plugin-datepicker#readme"
+  "homepage": "https://github.com/seekjs/seek2-plugin-datepicker#readme"
 }
